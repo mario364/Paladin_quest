@@ -1,4 +1,4 @@
-from weapons import Fists
+from weapons import Fists, Heal
 from func import get_action
 
 
@@ -7,7 +7,10 @@ class Paladin:
     hp = 15
     weapons = [Fists()]
     weapon = None
+    spells = [Heal()]
 
+    def __repr__(self):
+        return 'Герой'
     def equip(self):
         print('Доступное оружие: ')
         action = get_action(self.weapons, 'Оружие')
@@ -17,6 +20,11 @@ class Paladin:
         damage = self.weapon.hit()
         enemy.hp -= damage
         return damage
+
+    def wiz(self, target):
+        print('Выберите заклинание')
+        action = get_action(self.spells, 'Заклинания')
+        self.spells[action - 1].use_spell(target)
 
 
 player = Paladin()

@@ -18,6 +18,14 @@ class Sword:
     def hit(self):
         return random.randint(*self.damage)
 
+class Heal:
+
+    def __repr__(self):
+        return 'Лечение'
+    def use_spell(self, target):
+        target.hp += 3
+        print(f'HP {target} - {target.hp}')
+
 
 fist = Fists()
 
