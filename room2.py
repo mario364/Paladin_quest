@@ -9,7 +9,7 @@ def room2(player):
     events = ['Пойти на звук', 'Дверь', 'Книга']
     door_code = False
     irdis = True
-    bible = False
+    bible = True
     print('Вы вошли во вторую комнату, вам кажется, что задание слишком простое')
 
     while True:
@@ -38,9 +38,24 @@ def room2(player):
             else:
                 print('Старика больше нет')
 
-        if action == '2':
+        if action == 2:
+            if bible:
+                print('Вы увидели книгу.')
+                action = int(input("Хотите ее прочитать? " + yes_no))
+                if action == 2:
+                    print('Вы не прочли книгу')
+                    continue
+                if action == 1:
+                    print('Вы прочли книгу и расшифровали тайное послание, теперь вы знаете как открыть дверь')
+                    door_code = True
+                bible = False
             if not bible:
-                print('Вы увидели книгу.' + yes_no)
-                action = input("Хотите ее прочитать? ")
-        if action == '3':
-            pass
+                print('Книга уже прочитана')
+            continue
+        if action == 3:
+            if not door_code:
+                print('Дверь не открывается')
+                continue
+            if door_code:
+                print("Вы вышли из комнаты")
+                break
