@@ -19,3 +19,15 @@ class Goblin:
         damage = random.randint(2, 4)
         enemy.hp -= damage
         return damage
+
+
+class Skelet:
+    hp = 21
+
+    def __repr__(self):
+        return 'Скелет'
+
+    def attack(self, enemy):
+        damage = random.randint(4, 10)
+        enemy.hp -= damage
+        return damage

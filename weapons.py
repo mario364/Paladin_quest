@@ -26,6 +26,22 @@ class Heal:
         target.hp += 3
         print(f'HP {target} - {target.hp}')
 
+class Rare_sword:
+    damage = (7, 11)
+
+    def __repr__(self):
+        return 'Редкий меч'
+
+    def hit(self):
+        return random.randint(*self.damage)
+
+
+
+
+
+
+
+
 
 fist = Fists()
 

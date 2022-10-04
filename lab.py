@@ -1,9 +1,5 @@
 from hero import Paladin
-from enemy import Goblin
-from func import fight
+from Boss_fight import boss_room
 
 pal = Paladin()
-gob = Goblin()
-
-pal.weapon = pal.weapons[0]
-fight(pal, gob)
+boss_room(pal)
