@@ -31,7 +31,7 @@ def room2(player):
                           "Старец дал вам код")
                     print('За помощь, я излечу твои раны =)')
                     player.hp = player.max_hp
-                    print(f'У вас осталось {player.hp} HP')
+                    print(f'Ваше здоровье полностью восстановлено')
                     door_code = True
 
                 irdis = False
