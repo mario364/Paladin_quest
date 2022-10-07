@@ -15,7 +15,9 @@ def fight(player, enemy):
         if action == 1:
             if not player.weapon:
                 print("У вас нет оружия в руках!")
-                player.equip()
+                print('Доступное оружие: ')
+                action = get_action(player.weapons, 'Оружие')
+                player.equip(action - 1)
             damage = player.attack(enemy)
             print(f'Вы нанесли {damage} урона врагу')
             if enemy.hp <= 0:
@@ -27,12 +29,14 @@ def fight(player, enemy):
             continue
 
         if action == 3:
+            print('Выберите заклинание')
+            action = get_action(player.spells, 'Заклинания')
             target = int(input(f'1 - {enemy}\n2 - {player}\nВыберите цель: '))
             if target == 1:
                 target = enemy
             if target == 2:
                 target = player
-            player.wiz(target)
+            player.wiz(action-1, target)
 
         damage = enemy.attack(player)
         print(f'Вам нанесли {damage} урона')

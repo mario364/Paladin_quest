@@ -2,18 +2,18 @@ import random
 import PySimpleGUI as sg
 
 from enemy import Rat
-from gui_template import generate_down_panel, generate_button
+from gui_template import generate_down_panel, generate_button, weapons_window
 from hero import Paladin
 from weapons import Sword
 
 
 def room1_window(player):
-    events = ["Сундук", "Рычаг", "Дверь"]  # Указываем список событий
+    ways = ["Сундук", "Рычаг", "Дверь"]  # Указываем список событий
     # Служебные переменные для контроля за состоянием
     chest_state = False
     lever_state = False
 
-    buttons = generate_button(events)  # Из списка событий генерируются кнопки.
+    buttons = generate_button(ways)  # Из списка событий генерируются кнопки.
     down_panel = generate_down_panel(player)  # Генерируются нижняя панель
     down_panel[0].append(sg.Frame('Действия', buttons))  # К нижней панели добавляются кнопки
     layout = [
@@ -28,6 +28,8 @@ def room1_window(player):
         event, value = window.read()  # Считываются нажатия на кнопки
         if event == sg.WINDOW_CLOSED:  # Реакция на нажатие крестика
             break
+        if event == '-INV-':
+            weapons_window(player, window)
 
         if event == 'Сундук':
             if chest_state:
@@ -41,8 +43,18 @@ def room1_window(player):
             else:
                 lever_state = lever(window)
 
+        if event == 'Дверь':
+            door(lever_state)
+
     window.close()
 
+def door(lewer_state):
+    if lewer_state:
+        action = sg.PopupYesNo('Вы хотите зайти?')
+        if action == 'Yes':
+            print('Вы вышли')
+    if not lewer_state:
+        print('Дверь закрыта')
 
 def chest(player, window):
     sword = Sword()
