@@ -1,14 +1,14 @@
 from weapons import Fists, Heal
-from func import get_action
-
+import random
 
 class Paladin:
     max_hp = 15
     hp = 15
     weapons = [Fists()]
-    weapon = 'Нет'
+    weapon = Fists()
     spell = 'Нет'
     spells = [Heal()]
+    minion = None
 
 
     def __repr__(self):
@@ -19,6 +19,8 @@ class Paladin:
 
     def attack(self, enemy):
         damage = self.weapon.hit()
+        if self.minion:
+            damage += self.minion.buff()
         enemy.hp -= damage
         return damage
 
