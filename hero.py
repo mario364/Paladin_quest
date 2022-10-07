@@ -11,6 +11,7 @@ class Paladin:
 
     def __repr__(self):
         return 'Герой'
+
     def equip(self):
         print('Доступное оружие: ')
         action = get_action(self.weapons, 'Оружие')
@@ -28,4 +29,3 @@ class Paladin:
 
 
 player = Paladin()
-
