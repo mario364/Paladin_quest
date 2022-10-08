@@ -31,6 +31,8 @@ def room2_window(player):
             break
 
         if event == "Пойти на звук":
+            window['-IMG-'].Update('img/')
+
             if irdis_state:
                 print('Вы увидели умирающего старца на которого нападает гоблин')
                 action = sg.PopupYesNo('Вы хотите помочь?')
