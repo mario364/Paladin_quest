@@ -5,3 +5,4 @@ class Imp:
 
     def buff(self):
         return random.randint(*self.damage)
+

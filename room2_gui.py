@@ -10,7 +10,7 @@ def room2_window(player):
     # Служебные переменные для контроля за состоянием
     door_state = False
     irdis_state = True
-    bible_state = False
+    bible_state = True
     gob = Goblin()
 
 
@@ -58,8 +58,22 @@ def room2_window(player):
                 break
             if not door_state:
                 print('Дверь не открывается')
+
+
         if event == 'Книга':
-            pass
+            window['-IMG-'].Update('img/bible.png')
+
+            if bible_state:
+                action = sg.PopupYesNo('Вы хотите прочитать?')
+                if action == 'Yes':
+                    print('Вы прочли книгу и расшифровали код от двери')
+                    door_state = True
+                if action == 'No':
+                    print('ВЫ не прочитали книгу')
+                    door_state = False
+
+            if not bible_state:
+                print('Вы уже прочли книгу')
     window.close()
 
 

@@ -1,6 +1,6 @@
-def get_action(events, title='Действия'):
+def get_action(ways, title='Действия'):
     print(f' {title} '.center(21, '_'))
-    for num, event in enumerate(events, 1):
+    for num, event in enumerate(ways, 1):
         print('|', f'{num} {event}'.center(17), '|')
     print(''.center(21, '_'))
     action = int(input("Что сделать? "))
