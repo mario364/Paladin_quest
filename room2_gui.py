@@ -31,7 +31,7 @@ def room2_window(player):
             break
 
         if event == "Пойти на звук":
-            window['-IMG-'].Update('img/')
+            window['-IMG-'].Update('img/zicon2.5.png')
 
             if irdis_state:
                 print('Вы увидели умирающего старца на которого нападает гоблин')
