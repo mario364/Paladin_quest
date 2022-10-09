@@ -2,7 +2,7 @@ import random
 
 class Rat:
     hp = 7
-
+    max_hp = 7
     def __repr__(self):
         return 'Крыса'
     def attack(self, enemy):
@@ -12,7 +12,7 @@ class Rat:
 
 class Goblin:
     hp = 15
-
+    max_hp = 15
     def __repr__(self):
         return 'Гоблин'
     def attack(self, enemy):
@@ -23,7 +23,7 @@ class Goblin:
 
 class Skelet:
     hp = 21
-
+    max_hp = 15
     def __repr__(self):
         return 'Скелет'
 

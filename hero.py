@@ -17,6 +17,9 @@ class Paladin:
     def equip(self, index):
         self.weapon = self.weapons[index]
 
+    def equip_spell(self, index):
+        self.spell = self.spells[index]
+
     def attack(self, enemy):
         damage = self.weapon.hit()
         if self.minion:
