@@ -13,6 +13,8 @@ class Rat:
 class Goblin:
     hp = 15
     max_hp = 15
+    img = 'img/zicon2.5.png'
+
     def __repr__(self):
         return 'Гоблин'
     def attack(self, enemy):

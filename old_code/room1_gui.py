@@ -58,10 +58,9 @@ def door(lewer_state):
 
 def chest(player, window):
     sword = Sword()
-    rat = Rat()
     chest_stuff = [None, sword, rat]
+    rat = Rat()
     window['-IMG-'].Update('img/Chest.png')
-
     stuff = random.choice(chest_stuff)
     if not stuff:
         print("В сундуке пусто")

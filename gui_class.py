@@ -4,31 +4,36 @@ from hero import Paladin
 
 
 class Window:
+    title_room = 'Заголовок'
+    ways = ('Ты', 'Забыл', 'Указать', 'Варианты', 'Кнопок')
+    img = 'img/start.png'
+    _print_ = False
+    start_message = '\nТекст для заполнения, вы не указали в дочернем классе переменную start_message'
 
-    def __init__(self, player, ways, title_room):
+    def __init__(self, player):
         self.player = player
-        self.ways = ways
-        self.title_room = title_room
+        self.buttons = self.generate_button()
+        self.down_panel = self.generate_down_panel()
 
     def setup(self):
-        buttons = self.generate_button()  # Из списка событий генерируются кнопки.
-        down_panel = self.generate_down_panel()  # Генерируются нижняя панель
-        down_panel[0].append(sg.Frame('Действия', buttons))  # К нижней панели добавляются кнопки
-        layout = [
-            [sg.Column([[sg.Image(source='img/room.png', key='-IMG-')]]),  # В source передавай путь к файлу
-             sg.Output(key='-OUT-', size=(30, 1), expand_y=True, font=16)],
-            [sg.Column(down_panel, element_justification='center')]
-        ]
-        window = sg.Window(self.title_room, layout=layout,
-                           element_justification='center')  # Создаем объект окна приложения
+        layout = self.generate_layout()
+        window = sg.Window(self.title_room, layout=layout, element_justification='center')
         return window
 
-    @staticmethod
-    def main_loop(window):
-        while True:  # Главный цикл окна
-            event, value = window.read()  # Считываются нажатия на кнопки
-            if event == sg.WINDOW_CLOSED:  # Реакция на нажатие крестика
-                break
+    def main_loop(self, window, event, value):
+        pass
+
+    def generate_layout(self):
+        output = sg.Column([[sg.Text(self.start_message, key='-OUT-', size=(35, 10), font=16,
+                                     relief='groove', border_width=5, justification='center')]])
+        if self._print_:
+            output = sg.Output(size=(30, 1), expand_y=True, font=16)
+        layout = [
+            [sg.Column([[sg.Image(source=self.img, key='-IMG-')]]),  # В source передавай путь к файлу
+             output],
+            [sg.Column(self.down_panel, element_justification='center')]
+        ]
+        return layout
 
     def generate_down_panel(self):
         player = self.player
@@ -46,23 +51,34 @@ class Window:
         down_panel = [
             [sg.Frame("Характеристики Героя", frame_feature),
              sg.Frame('Инвентарь', frame_inventary),
+             sg.Frame('Действия', self.buttons)
              ]
         ]
-
         return down_panel
 
     def generate_button(self):
         events = self.ways
-
         buttons = [
             [sg.Button(event) for event in events if events.index(event) % 2 == 0],
             [sg.Button(event) for event in events if events.index(event) % 2 == 1],
         ]
         return buttons
 
+    def start_loop(self, window):
+        while True:  # Главный цикл окна
+            event, value = window.read()  # Считываются нажатия на кнопки
+            if event == sg.WINDOW_CLOSED:  # Реакция на нажатие крестика
+                break
+            if event == '-INV_WEAPONS-':
+                WeaponInventory(window, self.player).show()
+            if event == '-INV_SPELLS-':
+                SpellsInventory(window, self.player).show()
+            self.main_loop(window, event, value)
+            window['-HP-'].Update(f'Здоровье: {self.player.hp} / {self.player.max_hp}')
+
     def show(self):
         window = self.setup()
-        self.main_loop(window)
+        self.start_loop(window)
 
 
 class Inventory:
@@ -129,10 +145,48 @@ class SpellsInventory(Inventory):
 
 
 class Fight(Window):
-    @staticmethod
-    def main_loop(window):
-        pass
+    title_room = 'Битва'
+    ways = ["Ударить", "Колдовать", "Сбежать"]
+    _print_ = True
+
+    def __init__(self, player, enemy):
+        super().__init__(player)
+        self.enemy = enemy
+        self.extend_down_panel()
+        self.img = enemy.img
+
+    def extend_down_panel(self):
+        frame_enemy_feature = [
+            [sg.Text(f'Здоровье: {self.enemy.hp} / {self.enemy.max_hp}', key='-HP_ENEMY-')],
+        ]
+        self.down_panel[0].append(sg.Frame(self.enemy, frame_enemy_feature))
+
+    def main_loop(self, window, event, value):
+        if event == 'Ударить':
+            damage = self.player.attack(self.enemy)
+            window['-HP_ENEMY-'].Update(f'Здоровье: {self.enemy.hp} / {self.enemy.max_hp}')
+            print(f'Вы нанесли {damage} урона врагу')
+            if self.enemy.hp <= 0:
+                sg.Popup('Вы победили!')
+                window.close()
+            damage = self.enemy.attack(self.player)
+            window['-HP-'].Update(f'Здоровье: {self.player.hp} / {self.player.max_hp}')
+            print(f'Вам нанесли {damage} урона')
+            if self.player.hp <= 0:
+                print('Вы погибли!')
+                sg.Popup('Вы погибли!')
+                window.close()
+        if event == 'Колдовать':
+            pass
+
+        if event == 'Сбежать':
+            pass
 
 
-pal = Paladin()
-pal.weapons = ['asdf', 'sdfgs', '1231', 'sdgfsg']
+if __name__ == '__main__':
+    from enemy import Goblin, Rat
+    pal = Paladin()
+    gob = Goblin()
+    pal.weapons = ['asdf', 'sdfgs', '1231', 'sdgfsg']
+
+    Fight(pal, Rat()).show()
