@@ -1,105 +1,105 @@
+import random
 from hero import Paladin
-from gui_class import sg, Window, Fight
-
-lorem = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.' \
-        ' Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor '\
-        'in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident,'\
-        ' sunt in culpa qui officia deserunt mollit anim id est laborum.'
+from weapons import Sword, Rare_sword
 
 
-# class Fight(Window):
-#     title_room = 'Битва'
-#     ways = ["Ударить", "Колдовать", "Сбежать"]
-#     _print_ = False
-#
-#     def __init__(self, player, enemy):
-#         super().__init__(player)
-#         self.enemy = enemy
-#         self.extend_down_panel()
-#
-#     def extend_down_panel(self):
-#         frame_enemy_feature = [
-#             [sg.Text(f'Здоровье: {self.enemy.hp} / {self.enemy.max_hp}', key='-HP_ENEMY-')],
-#         ]
-#         self.down_panel[0].append(sg.Frame(self.enemy, frame_enemy_feature))
+def get_action(ways, title='Действия'):
+    print(f' {title} '.center(21, '_'))
+    for num, event in enumerate(ways, 1):
+        print('|', f'{num} {event}'.center(17), '|')
+    print(''.center(21, '_'))
+    action = int(input("Что сделать? "))
+    return action
 
 
-class Room1(Window):
-    _print_ = False
-    lever_state = False
-    ways = ["Сундук", "Рычаг", "Дверь"]
-    title_room = 'Комната 1'
-    start_message = 'Вы вошли в первую комнату'
+def fight(player, enemy):
+    print('Вы вступили в бой!')
+    print(f'У вас осталось {player.hp} HP')
+    events = ["Ударить", "Сменить оружие", 'Колдовать', "Сбежать"]
+    while True:
+        action = get_action(events)
+        if action == 1:
+            if not player.weapon:
+                print("У вас нет оружия в руках!")
+                print('Доступное оружие: ')
+                action = get_action(player.weapons, 'Оружие')
+                player.equip(action - 1)
+            damage = player.attack(enemy)
+            print(f'Вы нанесли {damage} урона врагу')
+            if enemy.hp <= 0:
+                print('Вы победили!')
+                for i in enemy.loot:
+                    print(f'Вы нашли {rat1.loot[i]}')
+                    if i == 'gold':
+                        pal.gold += rat1.loot[i]
+                        print(f'Общее кол-во золота {pal.gold}')
+                    if i == 'weapon':
+                        pal.weapons.append(rat1.loot[i])
+                        print(f'Оружие в инвентаре: {pal.weapons}')
 
-    def main_loop(self, window, event, value):
-        if event == 'Сундук':
-            Fight(pal, Rat()).show()
+                break
+            print(f"У врага осталось {enemy.hp} HP")
+        if action == 2:
+            action = get_action(player.weapons)
+            player.equip(action - 1)
+            continue
 
-        if event == 'Рычаг':
-            print('Вы подошли к рычагу.')
-            if self.lever_state:
-                window['-OUT-'].Update('Рычаг заклинило')
-                print('Рычаг заклинило')
-            else:
-                window['-IMG-'].Update('img/lever.png')
-                action = sg.PopupYesNo('Вы хотите нажать на рычаг?')
-                if action == 'No':
-                    window['-OUT-'].Update('Вы решили не рисковать')
-                    print('Вы решили не рисковать')
-                if action == 'Yes':
-                    window['-OUT-'].Update('Вы дернули рычаг и услышали звук механизма. Но откуда шел звук?')
-                    print('Вы дернули рычаг и услышали звук механизма. Но откуда шел звук?')
-                    self.lever_state = True
+        if action == 3:
+            print('Выберите заклинание')
+            action = get_action(player.spells, 'Заклинания')
+            target = int(input(f'1 - {enemy}\n2 - {player}\nВыберите цель: '))
+            if target == 1:
+                target = enemy
+            if target == 2:
+                target = player
+            player.wiz(action - 1, target)
 
-        if event == 'Дверь':
-            if self.lever_state:
-                action = sg.PopupYesNo('Вы хотите зайти?')
-                if action == 'Yes':
-                    window['-OUT-'].Update('Вы вышли')
-                    print('Вы вышли')
-                    window.close()
-            if not self.lever_state:
-                window['-OUT-'].Update('Дверь закрыта')
-                print('Дверь закрыта')
+        damage = enemy.attack(player)
+        print(f'Вам нанесли {damage} урона')
+        if player.hp <= 0:
+            print('Вы погибли!')
+            break
+        print(f'У вас осталось {player.hp} HP')
 
-class Room1_noprint(Window):
-    _print_ = False
-    lever_state = False
-    ways = ["Сундук", "Рычаг", "Дверь"]
-    title_room = 'Комната 1'
-    start_message = 'Вы вошли в первую комнату'
 
-    def main_loop(self, window, event, value):
-        if event == 'Сундук':
-            Fight(pal, Rat()).show()
+class Rat:
+    hp = 7
+    max_hp = 7
 
-        if event == 'Рычаг':
-            window['-OUT-'].Update('Вы подошли к рычагу.')
-            if self.lever_state:
-                window['-OUT-'].Update('Рычаг заклинило')
-            else:
-                window['-IMG-'].Update('img/lever.png')
-                action = sg.PopupYesNo('Вы хотите нажать на рычаг?')
-                if action == 'No':
-                    window['-OUT-'].Update('Вы решили не рисковать')
-                if action == 'Yes':
-                    window['-OUT-'].Update('Вы дернули рычаг и услышали звук механизма. Но откуда шел звук?')
-                    self.lever_state = True
+    def __init__(self, gold=10, weapon=None):
+        self.loot = {'gold': random.randint(1, gold), 'weapon': weapon}
 
-        if event == 'Дверь':
-            if self.lever_state:
-                action = sg.PopupYesNo('Вы хотите зайти?')
-                if action == 'Yes':
-                    window['-OUT-'].Update('Вы вышли')
-                    window.close()
-            if not self.lever_state:
-                window['-OUT-'].Update('Дверь закрыта')
+    def __repr__(self):
+        return 'Крыса'
 
-if __name__ == '__main__':
-    from enemy import Goblin, Rat
+    def attack(self, enemy):
+        damage = random.randint(1, 2)
+        enemy.hp -= damage
+        return damage
 
-    pal = Paladin()
-    gob = Goblin()
-    pal.weapons = ['asdf', 'sdfgs', '1231', 'sdgfsg']
-    test_room = Room1(pal)
-    test_room.show()
+
+class Goblin:
+    hp = 15
+    max_hp = 15
+    img = 'img/zicon2.5.png'
+
+    def __init__(self, gold=30, weapon=None):
+        self.loot = {'gold': random.randint(1, gold), 'weapon': weapon}
+
+    def __repr__(self):
+        return 'Гоблин'
+
+    def attack(self, enemy):
+        damage = random.randint(2, 4)
+        enemy.hp -= damage
+        return damage
+
+
+sword1 = Sword()
+sword2 = Rare_sword()
+pal = Paladin()
+rat1 = Rat(weapon=sword1)
+gob = Goblin(weapon=random.choice([sword1, sword2]))
+
+fight(pal, rat1)
+fight(pal, gob)

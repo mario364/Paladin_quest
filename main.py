@@ -8,4 +8,3 @@ pal1 = Paladin()
 room1(pal1)
 room2(pal1)
 boss_room(pal1)
-

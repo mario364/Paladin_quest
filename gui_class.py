@@ -168,6 +168,7 @@ class Fight(Window):
             print(f'Вы нанесли {damage} урона врагу')
             if self.enemy.hp <= 0:
                 sg.Popup('Вы победили!')
+                self.get_loot()
                 window.close()
             damage = self.enemy.attack(self.player)
             window['-HP-'].Update(f'Здоровье: {self.player.hp} / {self.player.max_hp}')
@@ -182,6 +183,13 @@ class Fight(Window):
         if event == 'Сбежать':
             pass
 
+    def get_loot(self):
+        loot = self.enemy.loot
+        for stuff in loot:
+            if stuff == 'gold':
+                self.player.gold += loot[stuff]
+            if stuff == 'weapon':
+                self.player.weapons.append(loot[stuff])
 
 if __name__ == '__main__':
     from enemy import Goblin, Rat

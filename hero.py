@@ -4,6 +4,7 @@ import random
 class Paladin:
     max_hp = 15
     hp = 15
+    gold = 0
     weapons = [Fists()]
     weapon = Fists()
     spell = 'Нет'
