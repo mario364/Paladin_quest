@@ -1,5 +1,4 @@
 import PySimpleGUI as sg
-
 from hero import Paladin
 
 

@@ -4,7 +4,7 @@ from hero import Paladin
 class Rat:
     hp = 7
     max_hp = 7
-
+    exp = 10
     def __init__(self, gold=10, weapon=None):
         self.loot = {'gold': random.randint(1, gold), 'weapon': weapon}
 
@@ -23,6 +23,9 @@ class Goblin:
     hp = 15
     max_hp = 15
     img = 'img/zicon2.5.png'
+    exp = 20
+    def __init__(self, gold=50, weapon=None):
+        self.loot = {'gold': random.randint(1, gold), 'weapon': weapon}
 
     def __repr__(self):
         return 'Гоблин'

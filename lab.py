@@ -1,4 +1,6 @@
 import random
+
+import weapons
 from hero import Paladin
 from weapons import Sword, Rare_sword
 
@@ -28,8 +30,14 @@ def fight(player, enemy):
             print(f'Вы нанесли {damage} урона врагу')
             if enemy.hp <= 0:
                 print('Вы победили!')
+                player.exp += enemy.exp
+                print(f'Вы получили: {enemy.exp} единиц опыт. Ваша опыт {player.exp}')
+                if player.exp >= 10:
+                    print(f'Вы подняли уровень! У вас повысилось HP. Ваше HP: {player.max_hp + 10}')
+                    player.exp = 0
+                    player.max_hp += 10
                 for i in enemy.loot:
-                    print(f'Вы нашли {rat1.loot[i]}')
+                    print(f'Вы нашли {rat1.loot[i]} золотых')
                     if i == 'gold':
                         pal.gold += rat1.loot[i]
                         print(f'Общее кол-во золота {pal.gold}')
@@ -65,6 +73,7 @@ def fight(player, enemy):
 class Rat:
     hp = 7
     max_hp = 7
+    exp = random.randint(3, 7)
 
     def __init__(self, gold=10, weapon=None):
         self.loot = {'gold': random.randint(1, gold), 'weapon': weapon}
@@ -98,6 +107,7 @@ class Goblin:
 sword1 = Sword()
 sword2 = Rare_sword()
 pal = Paladin()
+pal.weapon = sword1
 rat1 = Rat(weapon=sword1)
 gob = Goblin(weapon=random.choice([sword1, sword2]))
 

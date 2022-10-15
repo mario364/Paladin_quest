@@ -5,16 +5,15 @@ from weapons import Sword
 import random
 
 class Room1(Window):
-    lever_state = False
-    ways = ["Сундук", "Рычаг", "Дверь"]
     title_room = 'Комната 1'
-    start_message = 'Вы вошли в первую комнату'
-    # rat = Rat()
-    rat = Goblin()
+    ways = ["Сундук", "Рычаг", "Дверь"]
+    start_message = '\nВы вошли в первую комнату'
+    img = 'img/room.png'
+    lever_state = False
+    rat = Rat()
     sword = Sword()
     chest_state = False
-    # chest_stuff = [None, sword, rat]
-    chest_stuff = [ rat]
+    chest_stuff = [None, sword, rat]
 
     def main_loop(self, window, event, value):
         if event == 'Сундук':
@@ -56,6 +55,6 @@ class Room1(Window):
                 window['-OUT-'].Update('Дверь закрыта')
 
 pal = Paladin()
-pal.spells = ['asdf', 'asdfer']
-test_room = Room1(pal)
-test_room.show()
+rat = Goblin()
+# Room1(pal).show()
+Fight(pal, rat).show()
