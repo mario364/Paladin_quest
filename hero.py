@@ -1,5 +1,5 @@
 from weapons import Fists, Heal
-import random
+from armors_unit import Helmet
 
 class Paladin:
     max_hp = 15
@@ -7,6 +7,8 @@ class Paladin:
     max_exp = 10
     exp = 0
     gold = 0
+    armors = [Helmet()]
+    armor = None
     weapons = [Fists()]
     weapon = Fists()
     spell = 'Нет'

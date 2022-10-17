@@ -1,40 +1,41 @@
 import random
-from hero import Paladin
 
-class Rat:
+class Enemy:
+    damage = (0, 0)
+    def attack(self, enemy):
+        if enemy.armor:
+            damage = random.randint(*self.damage) - enemy.armor.defense
+            if damage < 0:
+                damage = 0
+        else:
+            damage = random.randint(*self.damage)
+        enemy.hp -= damage
+        return damage
+
+class Rat(Enemy):
+    damage = (1, 2)
     img = 'img/rat.png'
-    hp = 7
-    max_hp = 7
     exp = 10
-    def __init__(self, gold=10, weapon=None):
-        self.loot = {'gold': random.randint(1, gold), 'weapon': weapon}
-
-
-
+    max_hp = 7
     def __repr__(self):
         return 'Крыса'
 
-    def attack(self, enemy):
-        damage = random.randint(1, 2)
-        enemy.hp -= damage
-        return damage
+    def __init__(self, loot=None):
+        self.loot = loot
+        self.hp = self.max_hp
 
 
-class Goblin:
-    hp = 15
+class Goblin(Enemy):
+    damage = (2, 5)
     max_hp = 15
     img = 'img/zicon2.5.png'
     exp = 20
-    def __init__(self, gold=50, weapon=None):
-        self.loot = {'gold': random.randint(1, gold), 'weapon': weapon}
-
+    def __init__(self, loot=None):
+        self.loot = loot
+        self.hp = self.max_hp
     def __repr__(self):
         return 'Гоблин'
 
-    def attack(self, enemy):
-        damage = random.randint(2, 4)
-        enemy.hp -= damage
-        return damage
 
 
 class Skelet:

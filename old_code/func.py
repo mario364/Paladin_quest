@@ -7,7 +7,7 @@ def get_action(ways, title='Действия'):
     return action
 
 def fight(player, enemy):
-    print('Вы вступили в бой!')
+    print(f'Вы вступили в бой c {enemy}!')
     print(f'У вас осталось {player.hp} HP')
     events = ["Ударить", "Сменить оружие", 'Колдовать', "Сбежать"]
     while True:
@@ -39,6 +39,10 @@ def fight(player, enemy):
                             print(f'Вы нашли {enemy.loot[i]}')
                             player.weapons.append(enemy.loot[i])
                             print(f'Оружие в инвентаре: {player.weapons}')
+                    if i == 'armor':
+                        if enemy.loot[i]:
+                            print(f'Вы нашли {enemy.loot[i]}')
+                            player.armor = enemy.loot[i]
 
                 break
             print(f"У врага осталось {enemy.hp} HP")
@@ -56,7 +60,10 @@ def fight(player, enemy):
             if target == 2:
                 target = player
             player.wiz(action - 1, target)
-
+        if action == 4:
+            print('Вы полностью вылечились')
+            player.hp = player.max_hp
+            continue
         damage = enemy.attack(player)
         print(f'Вам нанесли {damage} урона')
         if player.hp <= 0:
