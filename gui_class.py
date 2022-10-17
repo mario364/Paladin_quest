@@ -1,3 +1,5 @@
+import time
+
 import PySimpleGUI as sg
 from hero import Paladin
 
@@ -146,7 +148,6 @@ class SpellsInventory(Inventory):
 class Fight(Window):
     title_room = 'Битва'
     ways = ["Ударить", "Колдовать", "Сбежать"]
-    _print_ = True
 
     def __init__(self, player, enemy):
         super().__init__(player)
@@ -164,14 +165,14 @@ class Fight(Window):
         if event == 'Ударить':
             damage = self.player.attack(self.enemy)
             window['-HP_ENEMY-'].Update(f'Здоровье: {self.enemy.hp} / {self.enemy.max_hp}')
-            print(f'Вы нанесли {damage} урона врагу')
+            window['-OUT-'].Update(f'Вы нанесли {damage} урона врагу')
             if self.enemy.hp <= 0:
                 sg.Popup('Вы победили!')
                 self.get_loot()
                 window.close()
             damage = self.enemy.attack(self.player)
             window['-HP-'].Update(f'Здоровье: {self.player.hp} / {self.player.max_hp}')
-            print(f'Вам нанесли {damage} урона')
+            window['-OUT-'].Update(f'Вам нанесли {damage} урона')
             if self.player.hp <= 0:
                 print('Вы погибли!')
                 sg.Popup('Вы погибли!')

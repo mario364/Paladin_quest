@@ -2,6 +2,7 @@ import random
 from hero import Paladin
 
 class Rat:
+    img = 'img/rat.png'
     hp = 7
     max_hp = 7
     exp = 10

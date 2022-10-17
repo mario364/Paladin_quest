@@ -22,10 +22,29 @@ def fight(player, enemy):
             print(f'Вы нанесли {damage} урона врагу')
             if enemy.hp <= 0:
                 print('Вы победили!')
+                player.exp += enemy.exp
+                print(f'Вы получили: {enemy.exp} единиц опыт. Ваша опыт {player.exp}')
+                if player.exp >= player.max_exp:
+                    print(f'Вы подняли уровень! У вас повысилось HP. Ваше HP: {player.max_hp + 10}')
+                    player.exp = 0
+                    player.max_exp += 10
+                    player.max_hp += 10
+                for i in enemy.loot:
+                    if i == 'gold':
+                        print(f'Вы нашли {enemy.loot[i]} золотых')
+                        player.gold += enemy.loot[i]
+                        print(f'Общее кол-во золота {player.gold}')
+                    if i == 'weapon':
+                        if enemy.loot[i]:
+                            print(f'Вы нашли {enemy.loot[i]}')
+                            player.weapons.append(enemy.loot[i])
+                            print(f'Оружие в инвентаре: {player.weapons}')
+
                 break
             print(f"У врага осталось {enemy.hp} HP")
         if action == 2:
-            player.equip()
+            action = get_action(player.weapons)
+            player.equip(action - 1)
             continue
 
         if action == 3:
@@ -36,7 +55,7 @@ def fight(player, enemy):
                 target = enemy
             if target == 2:
                 target = player
-            player.wiz(action-1, target)
+            player.wiz(action - 1, target)
 
         damage = enemy.attack(player)
         print(f'Вам нанесли {damage} урона')

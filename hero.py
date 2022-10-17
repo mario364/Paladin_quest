@@ -5,7 +5,7 @@ class Paladin:
     max_hp = 15
     hp = 15
     max_exp = 10
-    exp = 10
+    exp = 0
     gold = 0
     weapons = [Fists()]
     weapon = Fists()
@@ -16,10 +16,6 @@ class Paladin:
 
     def __repr__(self):
         return 'Герой'
-
-
-
-
 
 
     def equip(self, index):
