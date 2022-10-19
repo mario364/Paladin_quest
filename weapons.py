@@ -1,22 +1,23 @@
 import random
 
-class Fists:
+class Weapon:
+    damage = (0, 0)
+    def hit(self):
+        return random.randint(*self.damage)
+
+
+class Fists(Weapon):
     damage = (1, 3)
 
     def __repr__(self):
         return 'Кулаки'
 
-    def hit(self):
-        return random.randint(*self.damage)
 
-class Sword:
+class Sword(Weapon):
     damage = (3, 7)
 
     def __repr__(self):
         return 'Меч'
-
-    def hit(self):
-        return random.randint(*self.damage)
 
 class Heal:
 
@@ -26,7 +27,7 @@ class Heal:
         target.hp += 3
         print(f'HP {target} - {target.hp}')
 
-class Rare_sword:
+class Rare_sword(Weapon):
     damage = (7, 11)
 
     def __repr__(self):
